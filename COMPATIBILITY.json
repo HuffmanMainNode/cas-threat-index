@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "project": "CAS-XDP",
+  "repository": {
+    "owner": "HuffmanMainNode",
+    "name": "cas-threat-index",
+    "visibility": "public",
+    "url": "https://github.com/HuffmanMainNode/cas-threat-index"
+  },
+  "contract_version": "1.0",
+  "lifecycle_state": "planned",
+  "capabilities": [
+    "planned artifact metadata indexing",
+    "planned SHA-256 artifact digest calculation",
+    "planned publisher signature verification",
+    "planned trust and revocation status records"
+  ],
+  "negative_scope": [
+    "remote exploitation",
+    "outbound scanning (except explicitly authorized bounded artifact retrieval in cas-threat-index)",
+    "brute-force routines",
+    "counter-attack and retaliation",
+    "silent privileged mutation",
+    "fabricated or simulated live operational evidence"
+  ],
+  "platforms": [
+    {
+      "target": "Python 3 standard-library core",
+      "status": "planned",
+      "notes": "Target only; no runtime implementation or version matrix has been verified."
+    }
+  ],
+  "dependencies": {
+    "build": [
+      "Python 3 toolchain (target; version not yet pinned)"
+    ],
+    "runtime": [
+      "Python 3 standard library (intended offline core; not yet implemented)"
+    ],
+    "optional": [
+      "Ed25519 verification implementation (selection pending)",
+      "Sigstore/cosign verification integration (optional; selection pending)",
+      "Explicitly authorized upstream artifact retrieval transport (disabled by default; design pending)"
+    ]
+  },
+  "interfaces": [
+    "Versioned artifact provenance record (not yet defined)",
+    "Versioned trust/revocation record (not yet defined)"
+  ],
+  "verification": {
+    "highest_evidence_tier": "none",
+    "claims": [
+      {
+        "claim": "Repository initialization and contract baseline are present.",
+        "status": "unverified",
+        "evidence": []
+      },
+      {
+        "claim": "Executable behavior and platform compatibility.",
+        "status": "unverified",
+        "evidence": []
+      }
+    ]
+  }
+}
