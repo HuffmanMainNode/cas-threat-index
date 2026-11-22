@@ -31,8 +31,8 @@
   "platforms": [
     {
       "target": "Python 3.9+ standard-library core",
-      "status": "planned",
-      "notes": "CI workflow verified the prototype on Python 3.12 / ubuntu-24.04. Other Python versions and operating systems have not been tested; the declared Python 3.9+ target remains unverified beyond that CI runtime."
+      "status": "verified",
+      "notes": "CI matrix passed on Ubuntu 24.04 with Python 3.9, 3.10, 3.11, 3.12, and 3.13 using the pinned Ed25519 dependency. Other operating systems remain untested."
     }
   ],
   "dependencies": {
@@ -59,21 +59,21 @@
         "claim": "Streaming SHA-256, strict provenance validation, and explicit trust/revocation outcomes.",
         "status": "verified",
         "evidence": [
-          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976216467"
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976290165"
         ]
       },
       {
         "claim": "Ed25519 signature verification and verified-only SQLite catalog registration.",
         "status": "verified",
         "evidence": [
-          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976216467"
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976290165"
         ]
       },
       {
-        "claim": "Python 3.12 execution on ubuntu-24.04 in CI with cryptography 50.0.0.",
+        "claim": "Python 3.9 through 3.13 execution on Ubuntu 24.04 with the pinned Ed25519 dependency.",
         "status": "verified",
         "evidence": [
-          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976216467"
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976290165"
         ]
       }
     ]
