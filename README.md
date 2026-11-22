@@ -48,6 +48,11 @@ Unknown keys remain unknown. Untrusted or revoked keys are not accepted. Missing
 
 The current implementation performs no network access, upstream retrieval, package installation on behalf of a user, or artifact execution. Any future retrieval feature remains disabled by default and must be explicitly bounded to declared sources and immutable identifiers. Retrieved artifacts must never be executed by this tool.
 
+## Security and record formats
+
+- [Security model and limitations](SECURITY.md).
+- [Artifact record, signature construction, and trust evaluation](docs/FORMAT.md).
+
 ## Schemas
 
 - `schemas/artifact-record.schema.json`: signed artifact provenance record.
@@ -63,4 +68,4 @@ python3 -m unittest discover -v
 
 See [CONTRACT.md](CONTRACT.md) for the shared safety and evidence requirements. CI validates all three schemas, the repository manifest, contract/schema identity, and the deterministic unit test suite.
 
-**Lifecycle:** prototype. Platform compatibility and security review remain incomplete until the corresponding CI and independent review evidence is recorded.
+**Lifecycle:** prototype. The CI workflow has passed on Python 3.12 / ubuntu-24.04 with 14 unit tests and schema validation. Other Python versions, operating systems, and independent security review remain outstanding.
