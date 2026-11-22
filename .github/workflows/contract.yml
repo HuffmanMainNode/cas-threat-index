@@ -10,6 +10,9 @@ on:
       - 'tests/**'
       - 'requirements-crypto.txt'
       - 'pyproject.toml'
+      - 'README.md'
+      - 'SECURITY.md'
+      - 'docs/**'
       - '.github/workflows/contract.yml'
   pull_request:
     paths:
