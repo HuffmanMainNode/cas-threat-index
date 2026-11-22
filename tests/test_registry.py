@@ -123,22 +123,33 @@ class ThreatIndexTests(unittest.TestCase):
 
     def test_catalog_registers_only_verified_records_and_prevents_overwrite(self):
         catalog = self.root / "catalog.sqlite3"
-        result = registry.verify_record(self.artifact_path, self.record, self.trust_store)
-        registered = registry.register_verified_record(catalog, self.record, result)
-        self.assertEqual(registered["status"], "registered")
-        repeated = registry.register_verified_record(catalog, self.record, result)
-        self.assertEqual(repeated["status"], "already_registered")
+        registered = registry.register_verified_record(
+            catalog, self.artifact_path, self.record, self.trust_store
+        )
+        self.assertEqual(registered["catalog"]["status"], "registered")
+        repeated = registry.register_verified_record(
+            catalog, self.artifact_path, self.record, self.trust_store
+        )
+        self.assertEqual(repeated["catalog"]["status"], "already_registered")
         self.assertEqual(len(registry.list_catalog(catalog)), 1)
 
         changed = json.loads(json.dumps(self.record))
-        changed["artifact"]["sha256"] = "0" * 64
-        with self.assertRaises(registry.RegistryError):
-            registry.register_verified_record(catalog, changed, result)
-
-    def test_catalog_rejects_unverified_records(self):
+        changed["artifact"]["source"]["commit"] = "b" * 40
+        unsigned = {key: value for key, value in changed.items() if key != "signature"}
+        changed["signature"]["value"] = base64.b64encode(
+            self.private_key.sign(registry.canonical_json(unsigned))
+        ).decode("ascii")
         with self.assertRaises(registry.RegistryError):
             registry.register_verified_record(
-                self.root / "catalog.sqlite3", self.record, {"status": "unknown"}
+                catalog, self.artifact_path, changed, self.trust_store
+            )
+
+    def test_catalog_rejects_unverified_records(self):
+        changed = json.loads(json.dumps(self.record))
+        changed["signature"]["value"] = base64.b64encode(b"x" * 64).decode("ascii")
+        with self.assertRaises(registry.RegistryError):
+            registry.register_verified_record(
+                self.root / "catalog.sqlite3", self.artifact_path, changed, self.trust_store
             )
 
 
