@@ -8,55 +8,60 @@
     "url": "https://github.com/HuffmanMainNode/cas-threat-index"
   },
   "contract_version": "1.0",
-  "lifecycle_state": "planned",
+  "lifecycle_state": "prototype",
   "capabilities": [
-    "planned artifact metadata indexing",
-    "planned SHA-256 artifact digest calculation",
-    "planned publisher signature verification",
-    "planned trust and revocation status records"
+    "prototype: streaming SHA-256 digest and byte-size calculation",
+    "prototype: strict artifact provenance record validation",
+    "prototype: Ed25519 publisher signature verification against a local trust store",
+    "prototype: explicit unknown, untrusted, revoked, rejected, and dependency-unavailable outcomes",
+    "prototype: SQLite local catalog registration after successful verification",
+    "not implemented: upstream artifact retrieval",
+    "not implemented: Sigstore/cosign verification"
   ],
   "negative_scope": [
     "remote exploitation",
-    "outbound scanning (except explicitly authorized bounded artifact retrieval in cas-threat-index)",
+    "outbound scanning",
     "brute-force routines",
     "counter-attack and retaliation",
     "silent privileged mutation",
+    "artifact execution",
+    "network retrieval by the current implementation",
     "fabricated or simulated live operational evidence"
   ],
   "platforms": [
     {
-      "target": "Python 3 standard-library core",
+      "target": "Python 3.9+ standard-library core",
       "status": "planned",
-      "notes": "Target only; no runtime implementation or version matrix has been verified."
+      "notes": "The implementation targets Python 3.9+; a version and platform compatibility matrix has not been executed."
     }
   ],
   "dependencies": {
     "build": [
-      "Python 3 toolchain (target; version not yet pinned)"
+      "Python 3.9+ toolchain"
     ],
     "runtime": [
-      "Python 3 standard library (intended offline core; not yet implemented)"
+      "Python standard library"
     ],
     "optional": [
-      "Ed25519 verification implementation (selection pending)",
-      "Sigstore/cosign verification integration (optional; selection pending)",
-      "Explicitly authorized upstream artifact retrieval transport (disabled by default; design pending)"
+      "cryptography==45.0.7 for Ed25519 signature verification"
     ]
   },
   "interfaces": [
-    "Versioned artifact provenance record (not yet defined)",
-    "Versioned trust/revocation record (not yet defined)"
+    "CLI: digest, validate, verify, register, list",
+    "JSON artifact provenance record schema v1.0",
+    "JSON local trust store schema v1.0",
+    "Local SQLite catalog schema managed by the application"
   ],
   "verification": {
     "highest_evidence_tier": "none",
     "claims": [
       {
-        "claim": "Repository initialization and contract baseline are present.",
+        "claim": "Artifact digest, provenance, trust, revocation, and catalog operations.",
         "status": "unverified",
         "evidence": []
       },
       {
-        "claim": "Executable behavior and platform compatibility.",
+        "claim": "Python platform compatibility and independent security review.",
         "status": "unverified",
         "evidence": []
       }
