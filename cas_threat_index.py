@@ -154,7 +154,7 @@ def validate_trust_store(store: Any) -> dict[str, Any]:
         seen.add(identity)
         if key["algorithm"] != "Ed25519":
             raise RegistryError(f"trust store keys[{index}] algorithm must be Ed25519")
-        if key["status"] not in {"trusted", "untrusted"}:
+        if not isinstance(key["status"], str) or key["status"] not in {"trusted", "untrusted"}:
             raise RegistryError(f"trust store keys[{index}] status must be trusted or untrusted")
         try:
             raw_key = base64.b64decode(key["public_key"], validate=True)
@@ -171,9 +171,11 @@ def validate_trust_store(store: Any) -> dict[str, Any]:
             if not isinstance(revocation[field], str) or not revocation[field].strip():
                 raise RegistryError(f"trust store revocations[{index}].{field} must be a non-empty string")
         try:
-            datetime.fromisoformat(revocation["revoked_at"].replace("Z", "+00:00"))
+            parsed_time = datetime.fromisoformat(revocation["revoked_at"].replace("Z", "+00:00"))
+            if parsed_time.tzinfo is None:
+                raise ValueError("timezone is required")
         except ValueError as exc:
-            raise RegistryError(f"trust store revocations[{index}].revoked_at must be ISO-8601") from exc
+            raise RegistryError(f"trust store revocations[{index}].revoked_at must be timezone-aware ISO-8601") from exc
     return root
 
 
