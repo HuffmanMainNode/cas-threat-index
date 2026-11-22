@@ -280,11 +280,17 @@ def verify_record(artifact_path: Path, manifest: Any, trust_store: Any) -> dict[
     }
 
 
-def register_verified_record(catalog_path: Path, manifest: Any, verification: dict[str, Any]) -> dict[str, Any]:
-    """Register a verified record in a local SQLite catalog without overwrites."""
-    if verification.get("status") != "verified":
-        raise RegistryError("only records with status 'verified' may be registered")
+def register_verified_record(
+    catalog_path: Path, artifact_path: Path, manifest: Any, trust_store: Any
+) -> dict[str, Any]:
+    """Verify the supplied bytes and signer internally before catalog insertion."""
     record = validate_manifest(manifest)
+    verification = verify_record(artifact_path, record, trust_store)
+    if verification.get("status") != "verified":
+        raise RegistryError(
+            "catalog registration requires successful integrity and publisher verification: "
+            + verification.get("status", "unknown")
+        )
     artifact = record["artifact"]
     canonical_record = canonical_json(record).decode("utf-8")
     try:
@@ -307,7 +313,11 @@ def register_verified_record(catalog_path: Path, manifest: Any, verification: di
             ).fetchone()
             if existing:
                 if existing[0] == artifact["sha256"].lower() and existing[1] == canonical_record:
-                    return {"status": "already_registered", "name": artifact["name"], "version": artifact["version"]}
+                    return {
+                        "status": "verified",
+                        "verification": verification,
+                        "catalog": {"status": "already_registered", "name": artifact["name"], "version": artifact["version"]},
+                    }
                 raise RegistryError("catalog already contains this artifact name/version with different content")
             registered_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
             connection.execute(
@@ -317,8 +327,11 @@ def register_verified_record(catalog_path: Path, manifest: Any, verification: di
             connection.commit()
     except sqlite3.Error as exc:
         raise RegistryError(f"catalog operation failed: {exc}") from exc
-    return {"status": "registered", "name": artifact["name"], "version": artifact["version"]}
-
+    return {
+        "status": "verified",
+        "verification": verification,
+        "catalog": {"status": "registered", "name": artifact["name"], "version": artifact["version"]},
+    }
 
 def list_catalog(catalog_path: Path) -> list[dict[str, Any]]:
     if not catalog_path.exists():
@@ -386,9 +399,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.command in {"verify", "register"}:
             manifest = load_json(args.manifest)
             trust_store = load_json(args.trust_store)
-            result = verify_record(args.artifact, manifest, trust_store)
-            if args.command == "register" and result["status"] == "verified":
-                result["catalog"] = register_verified_record(args.catalog, manifest, result)
+            if args.command == "register":
+                result = register_verified_record(args.catalog, args.artifact, manifest, trust_store)
+            else:
+                result = verify_record(args.artifact, manifest, trust_store)
             _print_json(result)
             return 0 if result["status"] == "verified" else 2
         if args.command == "list":
