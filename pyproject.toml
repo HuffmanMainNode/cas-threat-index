@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools==75.8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cas-threat-index"
+version = "0.1.0"
+description = "Offline-first artifact provenance and trust registry for CAS-XDP"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+crypto = ["cryptography==45.0.7"]
+test = ["cryptography==45.0.7", "jsonschema==4.23.0"]
+
+[project.scripts]
+cas-threat-index = "cas_threat_index:main"
+
+[tool.setuptools]
+py-modules = ["cas_threat_index"]
