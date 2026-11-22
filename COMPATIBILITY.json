@@ -43,7 +43,7 @@
       "Python standard library"
     ],
     "optional": [
-      "cryptography==45.0.7 for Ed25519 signature verification"
+      "cryptography==50.0.0 for Ed25519 signature verification"
     ]
   },
   "interfaces": [
@@ -59,21 +59,21 @@
         "claim": "Streaming SHA-256, strict provenance validation, and explicit trust/revocation outcomes.",
         "status": "verified",
         "evidence": [
-          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976152071"
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976216467"
         ]
       },
       {
         "claim": "Ed25519 signature verification and verified-only SQLite catalog registration.",
         "status": "verified",
         "evidence": [
-          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976152071"
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976216467"
         ]
       },
       {
-        "claim": "Python 3.12 execution on ubuntu-24.04 in CI.",
+        "claim": "Python 3.12 execution on ubuntu-24.04 in CI with cryptography 50.0.0.",
         "status": "verified",
         "evidence": [
-          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976152071"
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976216467"
         ]
       }
     ]
