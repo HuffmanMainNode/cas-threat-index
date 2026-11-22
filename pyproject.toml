@@ -10,8 +10,8 @@ requires-python = ">=3.9"
 dependencies = []
 
 [project.optional-dependencies]
-crypto = ["cryptography==45.0.7"]
-test = ["cryptography==45.0.7", "jsonschema==4.23.0"]
+crypto = ["cryptography==50.0.0"]
+test = ["cryptography==50.0.0", "jsonschema==4.23.0"]
 
 [project.scripts]
 cas-threat-index = "cas_threat_index:main"
