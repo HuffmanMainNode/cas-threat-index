@@ -32,7 +32,7 @@
     {
       "target": "Python 3.9+ standard-library core",
       "status": "planned",
-      "notes": "The implementation targets Python 3.9+; a version and platform compatibility matrix has not been executed."
+      "notes": "CI workflow verified the prototype on Python 3.12 / ubuntu-24.04. Other Python versions and operating systems have not been tested; the declared Python 3.9+ target remains unverified beyond that CI runtime."
     }
   ],
   "dependencies": {
@@ -53,17 +53,28 @@
     "Local SQLite catalog schema managed by the application"
   ],
   "verification": {
-    "highest_evidence_tier": "none",
+    "highest_evidence_tier": "TIER-2",
     "claims": [
       {
-        "claim": "Artifact digest, provenance, trust, revocation, and catalog operations.",
-        "status": "unverified",
-        "evidence": []
+        "claim": "Streaming SHA-256, strict provenance validation, and explicit trust/revocation outcomes.",
+        "status": "verified",
+        "evidence": [
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976152071"
+        ]
       },
       {
-        "claim": "Python platform compatibility and independent security review.",
-        "status": "unverified",
-        "evidence": []
+        "claim": "Ed25519 signature verification and verified-only SQLite catalog registration.",
+        "status": "verified",
+        "evidence": [
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976152071"
+        ]
+      },
+      {
+        "claim": "Python 3.12 execution on ubuntu-24.04 in CI.",
+        "status": "verified",
+        "evidence": [
+          "https://github.com/HuffmanMainNode/cas-threat-index/actions/runs/44976152071"
+        ]
       }
     ]
   }
