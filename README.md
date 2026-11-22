@@ -69,3 +69,7 @@ python3 -m unittest discover -v
 See [CONTRACT.md](CONTRACT.md) for the shared safety and evidence requirements. CI validates all three schemas, the repository manifest, contract/schema identity, and the deterministic unit test suite.
 
 **Lifecycle:** prototype. The CI workflow has passed on Python 3.12 / ubuntu-24.04 with 14 unit tests and schema validation. Other Python versions, operating systems, and independent security review remain outstanding.
+
+## Prototype release record
+
+See [PROTOTYPE-RELEASE.md](PROTOTYPE-RELEASE.md) for the verified source commit, evidence ceiling, supported prototype scope, limitations, and next milestone. This document stages a prototype handoff; it does not create a GitHub Release or claim production readiness.
