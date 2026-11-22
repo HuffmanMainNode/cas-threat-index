@@ -153,5 +153,23 @@ class ThreatIndexTests(unittest.TestCase):
             )
 
 
+    def test_trust_store_rejects_non_string_status(self):
+        store = json.loads(json.dumps(self.trust_store))
+        store["keys"][0]["status"] = []
+        with self.assertRaises(registry.RegistryError):
+            registry.validate_trust_store(store)
+
+    def test_revocation_timestamp_requires_timezone(self):
+        store = json.loads(json.dumps(self.trust_store))
+        store["revocations"].append({
+            "publisher_id": "example.publisher",
+            "key_id": "release-2026",
+            "revoked_at": "2026-11-21T00:00:00",
+            "reason": "missing timezone",
+        })
+        with self.assertRaises(registry.RegistryError):
+            registry.validate_trust_store(store)
+
+
 if __name__ == "__main__":
     unittest.main()
